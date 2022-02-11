@@ -24,6 +24,9 @@
           <li class="nav-item">
             <router-link to="/About" class="nav-link">About</router-link>
           </li>
+          <li class="nav-item">
+            <router-link to="/parts/browse" class="nav-link">Browse Parts</router-link>
+          </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
             data-bs-toggle="dropdown" aria-expanded="false">
@@ -37,14 +40,28 @@
             </ul>
           </li>
         </ul>
-        <div><a href="" class= "btn btn-outline-secondary">Cart</a></div>
+        <div>
+          <router-link to="/cart" class="btn btn-outline-secondary">
+            Cart
+          </router-link>
+          <div class="cart-items">
+            {{cart.length}}
+          </div>
+        </div>
       </div>
     </div>
   </nav>
 </template>
 
 <script>
+
 export default {
   name: 'Navigation',
+  computed: {
+    cart() {
+      return this.$store.state.robots.cart;
+    },
+  },
 };
+
 </script>

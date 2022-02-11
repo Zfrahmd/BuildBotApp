@@ -1,5 +1,5 @@
 <template>
-  <div class="">
+  <div>
     <Search />
   </div>
 </template>
@@ -8,7 +8,6 @@
 import Search from '@/components/Search.vue';
 
 export default {
-  // Name must match the name of this view file
   name: 'SearchPage',
   components: {
     Search,

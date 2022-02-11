@@ -6,7 +6,6 @@
     </div>
     <slot v-if="open">
       <!-- Injected content to be placed here -->
-      <!-- slot element is vue specific -->
       <div>Slot Default content when no data is passed to Collapsible Section</div>
     </slot>
   </div>

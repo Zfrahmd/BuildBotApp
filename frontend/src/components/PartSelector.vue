@@ -3,7 +3,7 @@
     <img :src="selectedPart.src" @click="showPartInfo" title="arm"/>
     <button @click="selectPreviousPart()" class="prev-selector"></button>
     <button @click="selectNextPart()" class="next-selector"></button>
-    <span class="sale" v-if="selectedPart.onSale">Sale!</span>
+    <span v-pin="{ top: '10px', right: '10px' }" class="sale" v-if="selectedPart.onSale">Sale!</span>
   </div>
 </template>
 
@@ -20,7 +20,6 @@ function getNextValidIndex(index, length) {
 }
 
 export default {
-  /* parts variable that will be send by props to other components to share data */
   props: {
     // props validation
     parts: {
@@ -92,9 +91,6 @@ export default {
   border: 3px solid #aaa;
 }
 .sale {
-  position: absolute;
-  bottom: 5px;
-  right: 5px;
   color: white;
   background-color: red;
   padding: 3px;

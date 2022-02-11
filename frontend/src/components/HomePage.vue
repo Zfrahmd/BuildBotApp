@@ -7,15 +7,26 @@
 </template>
 
 <script>
+import { mapState, mapGetters } from 'vuex';
+
 export default {
   name: 'HomePage',
   props: {
     msg: String,
   },
+  computed: {
+    ...mapState({
+      rootFoo: 'foo',
+      robotsFoo: 'foo',
+    }),
+    ...mapGetters({
+      rootGetterFoo: 'foo',
+      robotsGetterFoo: 'foo',
+    }),
+  },
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 
 h3 {

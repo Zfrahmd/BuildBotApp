@@ -5,7 +5,6 @@
 </template>
 
 <script>
-// @ is an alias to /src
 import PartInfo from '@/components/PartInfo.vue';
 
 export default {

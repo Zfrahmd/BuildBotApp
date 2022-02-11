@@ -1,10 +1,10 @@
 <template>
-  <div class="content">
+  <div v-if="availableParts" class="content">
     <div class="row">
       <div class="col-8">
         <div class="top-row">
           <div class="robot-name">
-            {{selectedRobot.head.title}}
+            {{selectedRobot.head.title}} on 
             <span v-if="selectedRobot.head.onSale" class="sale">Sale!</span>
           </div>
           <PartSelector
@@ -57,47 +57,39 @@
             Add to Cart
           </button>
         </div>
-        <div class="row p-3 text-center">
-          <h3>Cart</h3>
-          <table>
-            <thead>
-              <tr>
-                <th>Robot</th>
-                <th class="cost">Cost</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(robot, index) in cart" :key="index">
-                <td>{{robot.head.title}}</td>
-                <td class="cost">{{robot.cost}}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-      <div class="row p-5">
-        <div id="partInfo">
-        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-// always import js files without .js extension
-import availableParts from '@/data/parts';
+import { mapActions } from 'vuex';
 import createdHookMixin from '@/mixins/created-hook-mixin';
 import PartSelector from '@/components/PartSelector.vue';
 import CollapsibleSection from '@/components/CollapsibleSection.vue';
 
 export default {
   name: 'RobotBuilder',
+  created() {
+    this.getParts();
+  },
   components: { PartSelector, CollapsibleSection },
   mixins: [createdHookMixin],
+  beforeRouteLeave(to, from, next) {
+    if (this.addedToCart) {
+      next(true);
+    } else {
+      console.log('beforeRouteLeave guard is working');
+      /* eslint no-alert: 0 */
+      /* eslint no-restricted-globals: 0 */
+      const response = window.confirm('You have not added robot to cart yet. All Unsave changes will be lost. Are you sure you want to leave this page?');
+      next(response);
+    }
+  },
   data() {
     return {
+      addedToCart: false,
       cart: [],
-      availableParts,
       selectedRobot: {
         head: {},
         leftArm: {},
@@ -107,8 +99,10 @@ export default {
       },
     };
   },
-
   computed: {
+    availableParts() {
+      return this.$store.state.robots.parts;
+    },
     headBorderStyle() {
       if (this.selectedRobot.head.onSale) {
         return { border: '3px solid red' };
@@ -117,6 +111,7 @@ export default {
     },
   },
   methods: {
+    ...mapActions('robots', ['getParts', 'addRobotToCart']),
     showPartInfo() {
       this.$router.push('/parts');
     },
@@ -127,17 +122,15 @@ export default {
         + robot.torso.cost
         + robot.rightArm.cost
         + robot.base.cost;
-      this.cart.push({ ...robot, cost });
+      this.addRobotToCart({ ...robot, cost })
+        .then(() => this.$router.push('/cart'));
+      this.addedToCart = true;
     },
   },
 };
 </script>
 
 <style scoped>
-
-/* .mycontainer {
-  zoom: 80%;
-} */
 
 .part {
   position: relative;
